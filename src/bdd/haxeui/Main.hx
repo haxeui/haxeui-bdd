@@ -11,6 +11,7 @@ import cpp.Lib;
 import gherkin.AstBuilder;
 import gherkin.Parser;
 import gherkin.ast.GherkinDocument;
+import haxe.Json;
 import sys.io.File;
 import input.simulation.KeyBoard;
 import input.simulation.Keys;
@@ -36,6 +37,63 @@ class Main {
         }        
         */
         
+        /*
+        var p:input.simulation.Process = input.simulation.Process.create();
+        p.open("Z:/TestApps/Drawing/bin/flash/release/bin/Drawing.swf");
+        trace(p.getProcessId());
+        
+        return;
+        */
+        
+        
+        var profiles:Array<Dynamic> = Json.parse(File.getContent("tests/profiles.json"));
+        for (profile in profiles) {
+            trace("name: " + profile.name);
+            trace("type: " + profile.type);
+            
+            startProfile(profile);
+            
+            
+            
+            
+            
+            
+            
+            var stepDefs:Array<String> = [
+                "tests/test1-stepdefs-a.hscript",
+                "tests/test1-stepdefs-b.hscript",
+                "tests/process-steps.hscript",
+                "tests/input-simulator-steps.hscript",
+                "tests/generic-steps.hscript",
+            ];
+            
+            var runner:FeatureRunner = new FeatureRunner("tests/test1.feature", stepDefs);
+            
+            var context:RunnerContext = new RunnerContext();
+            context.addStatic("System", ProcessUtil);
+            context.addStatic("Input", InputSimulatorUtil);
+            
+            context.addStatic("FakeRecord", MockDBRecord);
+            context.addObject("fakeDB", new MockDBService());
+            //var runner:Runner = new Runner(doc, script);
+            //runner.prepare();
+            runner.run(context);
+            
+            
+            
+            
+            
+            
+            
+            endProfile(profile);
+            
+            //break;
+        }
+        
+        //Sys.getChar(false);
+        return;
+        
+        
         var stepDefs:Array<String> = [
             "tests/test1-stepdefs-a.hscript",
             "tests/test1-stepdefs-b.hscript",
@@ -60,6 +118,47 @@ class Main {
         //test();
         Sys.getChar(false);
 	}
+    
+    private static var serverProcess:Process = null;
+    private static var browserProcess:Process = null;
+    private static function startProfile(profile) {
+        InputSimulatorUtil.mouse.setOffsetY(0);
+        
+        switch (profile.type) {
+            case "standalone":
+                var processId = ProcessUtil.open(profile.path, 1000);
+                trace(processId);
+                InputSimulatorUtil.handleFromProcessId(processId);                
+            case "browser":
+                serverProcess = new Process("nekotools", ["server", "-p", "4000", "-d", "Z:/TestApps/Drawing/bin/html5/release/bin"]);
+                //ProcessUtil.open(profile.path);
+                
+                // "C:\Program Files (x86)\Mozilla Firefox\firefox.exe" -foreground -new-instance -url http://localhost:2000/
+                browserProcess = new Process("C:/Program Files (x86)/Mozilla Firefox/firefox.exe", ["-foreground", "-silent", "-new-instance", "-url", "http://localhost:4000/"]);
+                trace(browserProcess.getPid());
+                Sys.sleep(3);
+                InputSimulatorUtil.handleFromProcessId(browserProcess.getPid());
+                InputSimulatorUtil.mouse.setOffsetY(48);
+                
+        }
+    }
+    
+    private static function endProfile(profile) {
+        switch (profile.type) {
+            case "standalone":
+                ProcessUtil.killCurrent();
+            case "browser":
+                if (serverProcess != null) {
+                    ProcessUtil.kill(serverProcess.getPid());
+                    serverProcess.close();
+                    serverProcess = null;
+                }
+                //ProcessUtil.kill(browserProcess.getPid());
+                //browserProcess.close();
+                InputSimulatorUtil.window.close();
+                ProcessUtil.killCurrent();
+        }
+    }
     
     
     public static function test() {

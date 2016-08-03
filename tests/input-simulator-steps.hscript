@@ -1,7 +1,22 @@
+step '^I am using "(.*)"' do | file | {
+    var processId = System.open(file);
+    assert_not(processId, 0);
+    assert_not(Input.handleFromProcessId(processId), false); 
+}
+
 step '^I am redirecting input to "(.*)"' do | title | {
     assert_not(Input.handleFromTitle(title), false);
 }
 
 step '^I move the mouse from (.*),(.*) to (.*),(.*)' do | x1, y1, x2, y2 | {
     Input.stroke(x1, y1, x2, y2);
+}
+
+step '^I click on (.*),(.*)' do | x, y | {
+    Input.click(x, y);
+}
+
+
+step '^I type "(.*)"' do | text | {
+    Input.type(text);
 }
