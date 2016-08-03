@@ -1,0 +1,3 @@
+step '^I open "(.*)"' do | cmd | {
+    System.open(cmd);
+}

@@ -1,0 +1,7 @@
+step '^I am redirecting input to "(.*)"' do | title | {
+    assert_not(Input.handleFromTitle(title), false);
+}
+
+step '^I move the mouse from (.*),(.*) to (.*),(.*)' do | x1, y1, x2, y2 | {
+    Input.stroke(x1, y1, x2, y2);
+}

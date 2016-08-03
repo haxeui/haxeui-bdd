@@ -1,0 +1,38 @@
+var lastAddedRecordId = null;
+
+step '^I add a record with the following details:$' do | table | {
+    var record = new FakeRecord();
+    record.id = table.value("id");
+    record.name = table.value("name");
+    record.value = table.value("value");
+    fakeDB.addRecord(record);
+    
+    lastAddedRecordId = record.id;
+}
+
+step '^that the record (.*) does not exist$' do | recordId | {
+    fakeDB.deleteRecord(recordId);
+}
+
+step '^I delete the record (.*)$' do | recordId | {
+    fakeDB.deleteRecord(recordId);
+}
+
+step '^the record (.*) should not exist$' do | recordId | {
+    assert(fakeDB.hasRecord(recordId), false);
+}
+
+step '^I set the (.*) record to:$' do | recordId, table | {
+    if (recordId == "last added") {
+        recordId = lastAddedRecordId;
+    }
+    
+    var record = fakeDB.getRecord(recordId);
+    assert_not(record, null);
+    if (table.value("name") != null) {
+        record.name = table.value("name");
+    }
+    if (table.value("value") != null) {
+        record.value = table.value("value");
+    }
+}

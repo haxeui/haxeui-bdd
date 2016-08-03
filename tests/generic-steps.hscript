@@ -1,0 +1,7 @@
+step '^I wait for (.*) seconds?' do | amount | {
+    System.sleep(amount);
+}
+
+step '^I wait for (.*) secondsssssssssssssss' do | amount | {
+    ProcessUtil.sleep(amount);
+}
