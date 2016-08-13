@@ -48,7 +48,8 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False" />
+  <postBuildCommand alwaysRun="False">cmd /c copy $(OutputDir)\default-profiles.json $(OutputDir)\bin /y
+cmd /c xcopy $(OutputDir)\container $(OutputDir)\bin\container /s /i /y</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

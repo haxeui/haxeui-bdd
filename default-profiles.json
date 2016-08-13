@@ -1,0 +1,18 @@
+[
+    {
+        "name": "OpenFL Windows",
+        "type": "standalone",
+        "path": "${baseDir}/container/haxeui-openfl/windows/cpp/haxeui-bdd-container.exe",
+        "settings": {
+            "startUpDelay": 1000
+        }
+    },
+    {
+        "name": "OpenFL Flash",
+        "type": "standalone",
+        "path": "${baseDir}/container/haxeui-openfl/flash/haxeui-bdd-container.swf",
+        "settings": {
+            "startUpDelay": 1000
+        }
+    }
+]

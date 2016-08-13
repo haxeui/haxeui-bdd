@@ -30,6 +30,8 @@ class Main {
         
         argHandler.parse(args);
         
+        cfg.profiles = "default-profiles.json";
+        
         Sys.println("Feature: " + cfg.featureFile);
         Sys.println("Profiles: " + cfg.profiles);
         Sys.println("Step Defs: " + cfg.stepDefsDir);

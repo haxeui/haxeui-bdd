@@ -58,6 +58,8 @@ class ProfileRunner {
     private var _serverProcess:Process = null;
     private var _browserProcess:Process = null;
     private function startProfile(profile) {
+        profile.path = replaceVars(profile.path);
+        
         InputSimulatorUtil.mouse.setOffsetY(0);
         
         var delay:Int = 0; // in ms
@@ -109,5 +111,11 @@ class ProfileRunner {
                 ProcessUtil.killCurrent();
         }
         Runner.debug("");
+    }
+    
+    private function replaceVars(input:String):String {
+        var output:String = input;
+        output = StringTools.replace(output, "${baseDir}", Sys.getCwd());
+        return output;
     }
 }
