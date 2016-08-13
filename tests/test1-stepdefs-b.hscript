@@ -1,8 +1,0 @@
-step '^a record with the following details should exist:$' do | table | {
-    var record = fakeDB.getRecord(table.value("id"));
-    assert_not(record, null);
-    assert(record.id, table.value("id"));
-    assert(record.name, table.value("name"));
-    assert(record.value, table.value("value"));
-}
-

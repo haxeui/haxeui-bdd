@@ -1,23 +1,19 @@
-@simulation
-Feature: Ensure mouse simulation works
+@remoting
+Feature: Ensure remoting works
 
   Background:
-    
-  @mouse  
-  Scenario: Ensure I can write my name
-    When I move the mouse from 200,20 to 200,200
-    And I move the mouse from 210,200 to 270,20
-    And I move the mouse from 270,20 to 330,200
-    And I move the mouse from 235,120 to 300,120
-    And I move the mouse from 340,200 to 340,20
-    And I move the mouse from 340,20 to 420,200
-    And I move the mouse from 420,200 to 421,20
-    
-
-  @keyboard  
-  Scenario: Ensure I can type in the text field
-    When I click on 30,30
-    And I type "Test text!"
-    And I wait for 2 seconds
+    Given I have a connection
   
-    
+  @button1
+  Scenario: Make sure button 1 works
+    When I click the "Button 1" button
+    Then the text of testField1 should be "Set from script!"
+    And the text of mainLabel should be "Button 1 clicked!"
+    And I do something
+  
+  @button2
+  Scenario: Make sure button 2 works
+    When I click the "Button 2" button
+    Then the text of testField2 should be "Set from code!"
+    And the text of mainLabel should be "Button 2 clicked!"
+    And I do something

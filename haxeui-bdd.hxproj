@@ -33,6 +33,9 @@
     <library name="haxe-bdd" />
     <library name="hscript" />
     <library name="input-simulator" />
+    <library name="haxeui-remoting" />
+    <library name="promhx" />
+    <library name="hxargs" />
   </haxelib>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

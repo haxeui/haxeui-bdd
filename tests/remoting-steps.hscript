@@ -1,0 +1,80 @@
+step '^I have a connection' do {
+    return Remoting.waitForConnected();
+}
+
+step '^I do something' do {
+}
+
+step '^I (.*) the "(.*)" (.*)' do | action, locator, type | { 
+    var d = deferred();
+    
+    Remoting.makeCall("components.list").then(function(components) {
+        var c = findByText(flatten(components), locator, type);
+        var x = c.screenLeft + (c.width / 2);
+        var y =  c.screenTop + (c.height / 2);
+        Input.click(x, y);
+        d.resolve(c);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
+step '^the (.*) of (.*) should be "(.*)"' do | property, locator, value | { 
+    var d = deferred();
+    
+    Remoting.makeCall("components.list").then(function(components) {
+        var c = findById(flatten(components), locator, null);
+        assert(c.text, value);
+        d.resolve(c);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
+function typeToClassName(type) {
+    switch (type) {
+        case "button":
+            return "haxe.ui.components.Button";
+    }
+}
+
+function findById(componentArray, id, type) {
+    var c = null;
+    for (test in componentArray) {
+        if (test.id == id && (test.className == typeToClassName(type) || type == null)) {
+            c = test;
+            break;
+        }
+    }
+    return c;
+}
+
+function findByText(componentArray, text, type) {
+    var c = null;
+    for (test in componentArray) {
+        if (test.text == text && (test.className == typeToClassName(type) || type == null)) {
+            c = test;
+            break;
+        }
+    }
+    return c;
+}
+
+function flatten(components) {
+    var array = [];
+    addComponentsToArray(components[0], array);
+    return array;
+}
+
+function addComponentsToArray(c, array) {
+    array.push(c);
+    if (c.children != null) {
+        for (child in c.children) {
+            addComponentsToArray(child, array);
+        }
+    }
+}

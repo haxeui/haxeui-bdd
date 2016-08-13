@@ -2,30 +2,33 @@
     {
         "name": "OpenFL Windows",
         "type": "standalone",
-        "path": "Z:/TestApps/Drawing/bin/windows/cpp/release/bin/Drawing.exe",
+        "path": "Z:/TestApps/haxeui-remoting-testapp/bin/windows/cpp/release/bin/haxeui-remoting-testapp.exe",
         "settings": {
+            "startUpDelay": 1000
         }
     },
     {
         "name": "OpenFL Flash",
         "type": "standalone",
-        "path": "Z:/TestApps/Drawing/bin/flash/release/bin/Drawing.swf",
+        "path": "Z:/TestApps/haxeui-remoting-testapp/bin/flash/release/bin/haxeui-remoting-testapp.swf",
         "settings": {
+            "startUpDelay": 1000
         }
     },
     {
         "name": "OpenFL HTML5",
         "type": "browser",
-        "path": "http://localhost:3000/",
         "settings": {
-            "server": "nekotools server -p 3000 -d Z:/TestApps/Drawing/bin/html5/release/bin"
+            "server": "nekotools server -p 4000 -d Z:/TestApps/haxeui-remoting-testapp/bin/html5/release/bin",
+            "startUpDelay": 2000
         }
     },
     {
         "name": "OpenFL Neko",
         "type": "standalone",
-        "path": "Z:/TestApps/Drawing/bin/windows/neko/release/bin/Drawing.exe",
+        "path": "Z:/TestApps/haxeui-remoting-testapp/bin/windows/neko/release/bin/haxeui-remoting-testapp.exe",
         "settings": {
+            "startUpDelay": 2000
         }
     }
 ]

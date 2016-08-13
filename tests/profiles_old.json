@@ -1,0 +1,31 @@
+[
+    {
+        "name": "OpenFL Windows",
+        "type": "standalone",
+        "path": "Z:/TestApps/Drawing/bin/windows/cpp/release/bin/Drawing.exe",
+        "settings": {
+        }
+    },
+    {
+        "name": "OpenFL Flash",
+        "type": "standalone",
+        "path": "Z:/TestApps/Drawing/bin/flash/release/bin/Drawing.swf",
+        "settings": {
+        }
+    },
+    {
+        "name": "OpenFL HTML5",
+        "type": "browser",
+        "path": "http://localhost:3000/",
+        "settings": {
+            "server": "nekotools server -p 3000 -d Z:/TestApps/Drawing/bin/html5/release/bin"
+        }
+    },
+    {
+        "name": "OpenFL Neko",
+        "type": "standalone",
+        "path": "Z:/TestApps/Drawing/bin/windows/neko/release/bin/Drawing.exe",
+        "settings": {
+        }
+    }
+]
