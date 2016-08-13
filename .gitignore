@@ -7,6 +7,8 @@
 .metadata
 bin/
 tmp/
+temp/
+container-src/temp/
 *.tmp
 *.bak
 *.swp

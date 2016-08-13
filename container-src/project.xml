@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <meta title="HaxeUI BDD Container" package="haxeui-bdd-container" version="1.0.0" company="" />
+    <app main="Main" file="haxeui-bdd-container" path="temp" />
+
+    <window background="#FFFFFF" fps="60" />
+    <window width="525" height="300" unless="mobile" />
+
+    <!-- classpath, haxe libs -->
+    <source path="." />
+
+    <haxelib name="openfl" />
+
+    <haxelib name="haxeui-core" />
+    <haxelib name="haxeui-openfl" />
+    <haxelib name="haxeui-remoting" />
+</project>

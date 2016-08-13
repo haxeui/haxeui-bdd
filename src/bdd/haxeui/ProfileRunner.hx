@@ -84,7 +84,7 @@ class ProfileRunner {
                 _serverProcess = new Process(first, arr);
                 
                 // "C:\Program Files (x86)\Mozilla Firefox\firefox.exe" -foreground -new-instance -url http://localhost:2000/
-                _browserProcess = new Process("C:/Program Files (x86)/Mozilla Firefox/firefox.exe", ["-foreground", "-silent", "-new-instance", "-url", "http://localhost:4000/"]);
+                _browserProcess = new Process("C:/Program Files (x86)/Mozilla Firefox/firefox.exe", ["-new-instance", "-url", "http://localhost:4000/"]);
                 Runner.debug("    Process Id: " + _browserProcess.getPid());
                 Sys.sleep(delay / 1000);
                 InputSimulatorUtil.handleFromProcessId(_browserProcess.getPid());
