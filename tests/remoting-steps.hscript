@@ -5,6 +5,44 @@ step '^I have a connection' do {
 step '^I do something' do {
 }
 
+step '^I create the user interface defined in "(.*)"$' do | filename | {
+    var fileContent = Files.getFileContent(filename);
+    
+    var d = deferred();
+    
+    Remoting.makeCall("component.create", {componentString: fileContent}).then(function(result) {
+       d.resolve(null);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
+step '^I create the UI$' do {
+    var d = deferred();
+    
+    Remoting.makeCall("component.create", {componentString: "<button text='tim'/>"}).then(function(result) {
+       d.resolve(null);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
+step '^I clear the user interface$' do {
+    var d = deferred();
+    
+    Remoting.makeCall("component.removeAllChildren").then(function(result) {
+       d.resolve(null);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
 step '^I should see the following components and values:$' do | table | {
     var d = deferred();
     
@@ -45,6 +83,20 @@ step '^the (.*) of (.*) should be "(.*)"' do | property, locator, value | {
     Remoting.makeCall("components.list").then(function(components) {
         var c = findById(flatten(components), locator, null);
         assert(c.text, value);
+        d.resolve(c);
+    }).catchError(function(e) {
+        d.throwError(e);
+    });
+    
+    return promise(d);
+}
+
+step '^the (.*) of (.*) should not be "(.*)"' do | property, locator, value | { 
+    var d = deferred();
+    
+    Remoting.makeCall("components.list").then(function(components) {
+        var c = findById(flatten(components), locator, null);
+        assert_not(c.text, value);
         d.resolve(c);
     }).catchError(function(e) {
         d.throwError(e);

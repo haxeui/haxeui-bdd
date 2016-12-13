@@ -18,6 +18,7 @@
     <class path="src" />
     <class path="..\haxe-bdd" />
     <class path="..\input-simulator" />
+    <class path="..\haxeui-remoting" />
   </classpaths>
   <!-- Build options -->
   <build>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<vbox width="100%">
+    <script>
+        function buttonClick() {
+            mainButton.text = "This shouldnt happen if you clicked Sub Button";
+        }
+    </script>
+    <button id="mainButton" text="Main Button" onClick="buttonClick()" width="100%">
+        <button id="subButton" text="Sub Button" onClick="" />
+    </button>
+</vbox>

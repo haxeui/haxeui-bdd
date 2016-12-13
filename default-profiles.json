@@ -14,5 +14,41 @@
         "settings": {
             "startUpDelay": 1000
         }
+    },
+    {
+        "name": "OpenFL HTML5",
+        "type": "browser",
+        "path": "http://localhost:4000/",
+        "settings": {
+            "server": "nekotools server -p 4000 -d ${baseDir}/container/haxeui-openfl/web",
+            "startUpDelay": 2000
+        }
+    },
+    {
+        "name": "OpenFL Neko",
+        "type": "standalone",
+        "path": "${baseDir}/container/haxeui-openfl/windows/neko/haxeui-bdd-container.exe",
+        "settings": {
+            "startUpDelay": 1500
+        }
+    },
+    {
+        "active": false,
+        "name": "Flambe HTML5",
+        "type": "browser",
+        "path": "http://localhost:4000/?flambe=html",
+        "settings": {
+            "server": "nekotools server -p 4000 -d ${baseDir}/container/haxeui-flambe",
+            "startUpDelay": 2000
+        }
+    },
+    {
+        "name": "Pure HTML5",
+        "type": "browser",
+        "path": "http://localhost:4000/",
+        "settings": {
+            "server": "nekotools server -p 4000 -d ${baseDir}/container/haxeui-html5",
+            "startUpDelay": 2000
+        }
     }
 ]

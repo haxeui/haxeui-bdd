@@ -154,9 +154,6 @@ Main.__name__ = ["Main"];
 Main.main = function() {
 	var app = new haxe_ui_HaxeUIApp();
 	app.ready(function() {
-		var button = new haxe_ui_components_Button();
-		button.set_text("Test");
-		app.addComponent(button);
 		app.start();
 	});
 };
@@ -729,6 +726,10 @@ haxe_CallStack.makeStack = function(s) {
 var haxe_IMap = function() { };
 $hxClasses["haxe.IMap"] = haxe_IMap;
 haxe_IMap.__name__ = ["haxe","IMap"];
+haxe_IMap.prototype = {
+	keys: null
+	,__class__: haxe_IMap
+};
 var haxe__$Int64__$_$_$Int64 = function(high,low) {
 	this.high = high;
 	this.low = low;
@@ -2376,6 +2377,35 @@ haxe_ui_Toolkit.build = function() {
 		ref9.addVar("top","endTop");
 		ref9.addVar("left","endLeft");
 		haxe_ui_animation_AnimationManager.get_instance().registerAnimation(a5.id,a5);
+		haxe_ui_core_ComponentClassMap.register("label","haxe.ui.components.Label");
+		haxe_ui_core_ComponentClassMap.register("vscroll","haxe.ui.components.VScroll");
+		haxe_ui_core_ComponentClassMap.register("vslider","haxe.ui.components.VSlider");
+		haxe_ui_core_ComponentClassMap.register("scrollview","haxe.ui.containers.ScrollView");
+		haxe_ui_core_ComponentClassMap.register("optionbox","haxe.ui.components.OptionBox");
+		haxe_ui_core_ComponentClassMap.register("messagedialog","haxe.ui.containers.dialogs.MessageDialog");
+		haxe_ui_core_ComponentClassMap.register("text","haxe.ui.components.Label");
+		haxe_ui_core_ComponentClassMap.register("vprogress","haxe.ui.components.VProgress");
+		haxe_ui_core_ComponentClassMap.register("box","haxe.ui.containers.Box");
+		haxe_ui_core_ComponentClassMap.register("checkboxvalue","haxe.ui.components.CheckBox.CheckBoxValue");
+		haxe_ui_core_ComponentClassMap.register("hscroll","haxe.ui.components.HScroll");
+		haxe_ui_core_ComponentClassMap.register("tabbar","haxe.ui.components.TabBar");
+		haxe_ui_core_ComponentClassMap.register("absolute","haxe.ui.containers.Absolute");
+		haxe_ui_core_ComponentClassMap.register("hprogress","haxe.ui.components.HProgress");
+		haxe_ui_core_ComponentClassMap.register("image","haxe.ui.components.Image");
+		haxe_ui_core_ComponentClassMap.register("optionboxvalue","haxe.ui.components.OptionBox.OptionBoxValue");
+		haxe_ui_core_ComponentClassMap.register("progress","haxe.ui.components.Progress");
+		haxe_ui_core_ComponentClassMap.register("stack","haxe.ui.containers.Stack");
+		haxe_ui_core_ComponentClassMap.register("tabview","haxe.ui.containers.TabView");
+		haxe_ui_core_ComponentClassMap.register("hslider","haxe.ui.components.HSlider");
+		haxe_ui_core_ComponentClassMap.register("slider","haxe.ui.components.Slider");
+		haxe_ui_core_ComponentClassMap.register("vbox","haxe.ui.containers.VBox");
+		haxe_ui_core_ComponentClassMap.register("component","haxe.ui.core.Component");
+		haxe_ui_core_ComponentClassMap.register("button","haxe.ui.components.Button");
+		haxe_ui_core_ComponentClassMap.register("scroll","haxe.ui.components.Scroll");
+		haxe_ui_core_ComponentClassMap.register("hbox","haxe.ui.containers.HBox");
+		haxe_ui_core_ComponentClassMap.register("dialog","haxe.ui.containers.dialogs.Dialog");
+		haxe_ui_core_ComponentClassMap.register("checkbox","haxe.ui.components.CheckBox");
+		haxe_ui_core_ComponentClassMap.register("textfield","haxe.ui.components.TextField");
 	})();
 	(function() {
 		var s1 = haxe_ui_Toolkit.nativeConfig.addSection("component");
@@ -2554,6 +2584,70 @@ haxe_ui_Toolkit.get_assets = function() {
 };
 haxe_ui_Toolkit.get_screen = function() {
 	return haxe_ui_core_Screen.get_instance();
+};
+haxe_ui_Toolkit.componentFromString = function(data,type) {
+	if(data == null || data.length == 0) return null;
+	if(type == null) {
+		if(StringTools.startsWith(StringTools.trim(data),"<")) type = "xml";
+	}
+	var parser = haxe_ui_parsers_ui_ComponentParser.get(type);
+	if(parser == null) {
+		haxe_Log.trace("WARNING: type \"" + type + "\" not recognised",{ fileName : "Toolkit.hx", lineNumber : 85, className : "haxe.ui.Toolkit", methodName : "componentFromString"});
+		return null;
+	}
+	var c = parser.parse(data);
+	var component = haxe_ui_Toolkit.buildComponentFromInfo(c);
+	var fullScript = "";
+	var _g = 0;
+	var _g1 = c.scriptlets;
+	while(_g < _g1.length) {
+		var scriptString = _g1[_g];
+		++_g;
+		fullScript += scriptString;
+	}
+	component.set_script(fullScript);
+	return component;
+};
+haxe_ui_Toolkit.buildComponentFromInfo = function(c) {
+	var className = haxe_ui_core_ComponentClassMap.get(c.type);
+	if(className == null) {
+		haxe_Log.trace("WARNING: no class found for component: " + c.type,{ fileName : "Toolkit.hx", lineNumber : 105, className : "haxe.ui.Toolkit", methodName : "buildComponentFromInfo"});
+		return null;
+	}
+	var component = Type.createInstance(Type.resolveClass(className),[]);
+	if(component == null) {
+		haxe_Log.trace("WARNING: could not create class instance: " + className,{ fileName : "Toolkit.hx", lineNumber : 111, className : "haxe.ui.Toolkit", methodName : "buildComponentFromInfo"});
+		return null;
+	}
+	if(c.id != null) component.set_id(c.id);
+	if(c.left != null) component.set_left(c.left);
+	if(c.top != null) component.set_top(c.top);
+	if(c.width != null) component.set_width(c.width);
+	if(c.height != null) component.set_height(c.height);
+	if(c.percentWidth != null) component.set_percentWidth(c.percentWidth);
+	if(c.percentHeight != null) component.set_percentHeight(c.percentHeight);
+	if(c.text != null) component.set_text(c.text);
+	if(c.styleNames != null) component.set_styleNames(c.styleNames);
+	if(c.style != null) component.set_styleString(c.style);
+	var $it0 = c.properties.keys();
+	while( $it0.hasNext() ) {
+		var propName = $it0.next();
+		var propValue = c.properties.get(propName);
+		if(StringTools.startsWith(propName,"on")) component.addScriptEvent(propName,propValue); else {
+			if(Object.prototype.hasOwnProperty.call(component,propName) == false) continue;
+			if(propValue == "true" || propValue == "yes" || propValue == "false" || propValue == "no") propValue = propValue == "true" || propValue == "yes"; else if(Std.parseInt(propValue) != null) propValue = Std.parseInt(propValue);
+			component[propName] = propValue;
+		}
+	}
+	var _g = 0;
+	var _g1 = c.children;
+	while(_g < _g1.length) {
+		var childInfo = _g1[_g];
+		++_g;
+		var childComponent = haxe_ui_Toolkit.buildComponentFromInfo(childInfo);
+		if(childComponent != null) component.addComponent(childComponent);
+	}
+	return component;
 };
 var haxe_ui_backend_AssetsBase = function() {
 };
@@ -9488,6 +9582,10 @@ haxe_ui_core_ComponentClassMap.get = function(alias) {
 haxe_ui_core_ComponentClassMap.register = function(alias,className) {
 	haxe_ui_core_ComponentClassMap.get_instance().registerClassName(alias,className);
 };
+haxe_ui_core_ComponentClassMap.list = function() {
+	var this1 = haxe_ui_core_ComponentClassMap.get_instance()._map;
+	return this1.keys();
+};
 haxe_ui_core_ComponentClassMap.prototype = {
 	_map: null
 	,getClassName: function(alias) {
@@ -11090,6 +11188,10 @@ haxe_ui_remoting_client_calls_Call.create = function(name) {
 		return new haxe_ui_remoting_client_calls_ListComponents();
 	case "component.highlight":
 		return new haxe_ui_remoting_client_calls_HighlightComponent();
+	case "component.removeAllChildren":
+		return new haxe_ui_remoting_client_calls_RemoveAllChildComponents();
+	case "component.create":
+		return new haxe_ui_remoting_client_calls_CreateComponent();
 	}
 	return null;
 };
@@ -11099,6 +11201,22 @@ haxe_ui_remoting_client_calls_Call.prototype = {
 	}
 	,__class__: haxe_ui_remoting_client_calls_Call
 };
+var haxe_ui_remoting_client_calls_CreateComponent = function() {
+	haxe_ui_remoting_client_calls_Call.call(this);
+};
+$hxClasses["haxe.ui.remoting.client.calls.CreateComponent"] = haxe_ui_remoting_client_calls_CreateComponent;
+haxe_ui_remoting_client_calls_CreateComponent.__name__ = ["haxe","ui","remoting","client","calls","CreateComponent"];
+haxe_ui_remoting_client_calls_CreateComponent.__super__ = haxe_ui_remoting_client_calls_Call;
+haxe_ui_remoting_client_calls_CreateComponent.prototype = $extend(haxe_ui_remoting_client_calls_Call.prototype,{
+	execute: function(details) {
+		if(details == null) return false;
+		var componentString = details.componentString;
+		var component = haxe_ui_Toolkit.componentFromString(componentString);
+		haxe_ui_core_Screen.get_instance().addComponent(component);
+		return true;
+	}
+	,__class__: haxe_ui_remoting_client_calls_CreateComponent
+});
 var haxe_ui_remoting_client_calls_HighlightComponent = function() {
 	haxe_ui_remoting_client_calls_Call.call(this);
 };
@@ -11107,10 +11225,8 @@ haxe_ui_remoting_client_calls_HighlightComponent.__name__ = ["haxe","ui","remoti
 haxe_ui_remoting_client_calls_HighlightComponent.__super__ = haxe_ui_remoting_client_calls_Call;
 haxe_ui_remoting_client_calls_HighlightComponent.prototype = $extend(haxe_ui_remoting_client_calls_Call.prototype,{
 	execute: function(details) {
-		var id;
-		id = __map_reserved.id != null?details.getReserved("id"):details.h["id"];
-		var hightlight;
-		hightlight = (__map_reserved.highlight != null?details.getReserved("highlight"):details.h["highlight"]) == "true";
+		var id = details.id;
+		var hightlight = details.highlight == "true";
 		var component = haxe_ui_core_Screen.get_instance().rootComponents[0].findComponent(id,haxe_ui_core_Component,true);
 		if(component != null) {
 			if(hightlight == true) {
@@ -11176,6 +11292,25 @@ haxe_ui_remoting_client_calls_ListComponents.prototype = $extend(haxe_ui_remotin
 		return components;
 	}
 	,__class__: haxe_ui_remoting_client_calls_ListComponents
+});
+var haxe_ui_remoting_client_calls_RemoveAllChildComponents = function() {
+	haxe_ui_remoting_client_calls_Call.call(this);
+};
+$hxClasses["haxe.ui.remoting.client.calls.RemoveAllChildComponents"] = haxe_ui_remoting_client_calls_RemoveAllChildComponents;
+haxe_ui_remoting_client_calls_RemoveAllChildComponents.__name__ = ["haxe","ui","remoting","client","calls","RemoveAllChildComponents"];
+haxe_ui_remoting_client_calls_RemoveAllChildComponents.__super__ = haxe_ui_remoting_client_calls_Call;
+haxe_ui_remoting_client_calls_RemoveAllChildComponents.prototype = $extend(haxe_ui_remoting_client_calls_Call.prototype,{
+	execute: function(details) {
+		var _g = 0;
+		var _g1 = haxe_ui_core_Screen.get_instance().rootComponents;
+		while(_g < _g1.length) {
+			var r = _g1[_g];
+			++_g;
+			haxe_ui_core_Screen.get_instance().removeComponent(r);
+		}
+		return true;
+	}
+	,__class__: haxe_ui_remoting_client_calls_RemoveAllChildComponents
 });
 var haxe_ui_remoting_client_impl_JavaScriptSocket = function() {
 };

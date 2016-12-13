@@ -5,7 +5,7 @@
 ##############################################################################################
 ## openfl neko
 ##############################################################################################
--cmd haxelib run openfl build project.xml neko -release
+-cmd haxelib run openfl build project.xml neko -debug
 -cmd xcopy /s /i /y temp\windows\neko\release\bin\*.* ..\container\haxeui-openfl\windows\neko
 ##############################################################################################
 
@@ -14,7 +14,7 @@
 ##############################################################################################
 ## openfl cpp
 ##############################################################################################
--cmd haxelib run openfl build project.xml windows -release
+-cmd haxelib run openfl build project.xml windows -debug
 -cmd xcopy /s /i /y temp\windows\cpp\release\bin\*.* ..\container\haxeui-openfl\windows\cpp
 ##############################################################################################
 
@@ -23,7 +23,7 @@
 ##############################################################################################
 ## openfl html5
 ##############################################################################################
--cmd haxelib run openfl build project.xml html5 -release
+-cmd haxelib run openfl build project.xml html5 -debug
 -cmd xcopy /s /i /y temp\html5\release\bin\*.* ..\container\haxeui-openfl\web
 ##############################################################################################
 
@@ -32,7 +32,7 @@
 ##############################################################################################
 ## openfl flash
 ##############################################################################################
--cmd haxelib run openfl build project.xml flash -release
+-cmd haxelib run openfl build project.xml flash -debug
 -cmd xcopy /s /i /y temp\flash\release\bin\*.* ..\container\haxeui-openfl\flash
 ##############################################################################################
 
@@ -55,10 +55,6 @@
 ##############################################################################################
 ## pure html5
 ##############################################################################################
--cmd flambe build --release
+-cmd flambe build --debug
 -cmd xcopy /s /i /y build\web\*.* ..\container\haxeui-flambe
 ##############################################################################################
-
---next
-
--cmd xcopy /s /i /y copy\*.* ..\container
